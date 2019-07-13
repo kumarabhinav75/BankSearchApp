@@ -61,4 +61,32 @@ const cachingResponseFromFetch = (cityName) => {
             return res;
             })
 
-  }
+}
+
+//function to render table with array of objects.
+const renderTable = (data) => {
+    const bankData = data;
+    const bankTableData = [`<tr>
+        <th>Index</th>
+        <th>IFSC</th>
+        <th>Bank Name</th>
+        <th>Branch Name</th>
+        <th>Address</th>
+        </tr>`].concat(
+                    bankData.map((bank,index) => {
+                        const {ifsc,address,bank_name, branch} = bank;
+                        return (
+                            `
+                            <tr>
+                                <td>${index+1}</td>
+                                <td>${ifsc}</td>
+                                <td>${bank_name}</td>
+                                <td>${branch}</td>
+                                <td>${address}</td>
+                            </tr>`
+                        )
+                    })
+        );
+
+    bankTable.innerHTML = bankTableData.join('');
+}
