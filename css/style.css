@@ -24,7 +24,7 @@ h2 {
 .select-container {
     display: flex;
     justify-content: space-evenly;
-    width: 40%;
+    width: 50%;
     margin: 10px auto;
 }
 
@@ -146,11 +146,20 @@ z-index: 1;
 visibility: visible;
 }
 
-.tooltip p{
-    display: inline-block;
-    height:120px;
-    font-size:50px;
+
+#favourite {
     color: goldenrod;
-    margin-left: 20px;
-    margin-top : 30px;
+    font-size: 20px;
+    width: 200px;
+    margin-top:20px;
+    margin-left: 10px;
+    line-height:120px;
+}
+
+
+#fav-checkbox {
+    height:5px;
+    width: 5px;
+    display: inline-block;
+    line-height: 120px;
 }
