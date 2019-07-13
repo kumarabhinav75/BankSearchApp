@@ -96,8 +96,25 @@ const handleCitySelect = async (cityName) => {
     bankDataContainer.style.display = '';
 }
 
+//set the size to global variable and call newPagination with filteredData
 const handlePageSizeChange = (size) => {
-    pageSize = size;
+    pageSize = parseInt(size);
+    newPagination(filteredData);
+}
+
+// search against all fields
+// indexOf returns -1 for no result
+// to search accross 4 fields, add all indexOfs and check if value > -4? to match rows
+const handleSearchInput = (value) => {
+    filteredData = finalBankData.filter((bank) => {
+        const { ifsc,address,bank_name, branch } = bank;
+        const ifscIndex = ifsc.indexOf(value);
+        const addressIndex = address.indexOf(value);
+        const nameIndex = bank_name.indexOf(value);
+        const branchIndex = branch.indexOf(value);
+        const totalIndex  = ifscIndex+addressIndex+nameIndex+branchIndex;
+        return totalIndex > -4? true:false; //just checks if total sum >-4 (will be if any of searches give >-1)
+    });
     newPagination(filteredData);
 }
 
