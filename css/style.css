@@ -24,7 +24,7 @@ h2 {
 .select-container {
     display: flex;
     justify-content: space-evenly;
-    width: 35%;
+    width: 40%;
     margin: 10px auto;
 }
 
@@ -112,4 +112,39 @@ input:hover, select:hover, button:hover {
 #page-number {
     color: white;
     text-align: center;
+}
+
+.tooltip {
+position: relative;
+display: inline-block;
+border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.tooltip .tooltiptext {
+visibility: hidden;
+width: 120px;
+background-color: greenyellow;
+color: brown;
+text-align: center;
+padding: 25px 10px;
+border-radius: 16px;
+margin-left: 12px;
+
+/* Position the tooltip text - see examples below! */
+position: absolute;
+z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+visibility: visible;
+}
+
+.tooltip p{
+    display: inline-block;
+    height:120px;
+    font-size:50px;
+    color: goldenrod;
+    margin-left: 20px;
+    margin-top : 30px;
 }
