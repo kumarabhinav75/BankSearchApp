@@ -70,6 +70,12 @@ td {
     overflow-x: hidden;
 }
 
+tr:hover,td:hover {
+    border-color: goldenrod;
+    background-color: grey;
+    text-decoration-color: black;
+}
+
 .loader {
     border: 16px solid goldenrod; /* Light grey */
     border-top: 16px solid black; /* Blue */
