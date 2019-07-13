@@ -22,16 +22,21 @@ loader.style.display = 'none';
 bankDataContainer.style.display = 'none';
 
 //handle city dropdown selection
-const handleCitySelect = (cityName) => {
+const handleCitySelect = async (cityName) => {
     //show loader and hide table
     bankDataContainer.style.display = 'none';
     loader.style.display = '';
+
+    //check for cached response
     const data = await cachingResponseFromFetch(cityName);
-    finalBankData = data;           //storing globally
-    filteredData = finalBankData;   //storing globally
+    finalBankData = data;
+    filteredData = finalBankData;
     pagesCount = Math.ceil(finalBankData.length/pageSize);
+    newPagination(filteredData);
 
-
+    //hide loader and show table
+    loader.style.display = 'none';
+    bankDataContainer.style.display = '';
 }
 
 
