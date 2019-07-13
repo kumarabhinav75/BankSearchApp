@@ -15,6 +15,11 @@ prevButton.addEventListener("click", () => previousPage());
 nextButton.addEventListener("click", () => nextPage());
 pageSizeSelector.addEventListener("change", (e) => handlePageSizeChange(e.target.value));
 
+let finalBankData=[];
+let filteredData=[];
+
+loader.style.display = 'none';
+bankDataContainer.style.display = 'none';
 
 //handle city dropdown selection
 const handleCitySelect = (cityName) => {
