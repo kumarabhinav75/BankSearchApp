@@ -1,0 +1,38 @@
+body {
+    background-color: black;
+}
+
+h1 {
+    color: goldenrod;
+    text-align: center;
+    margin: 40px;
+    font-size: 50px;
+    letter-spacing: 10px;
+    font-weight: lighter;
+}
+
+h2 {
+    color: goldenrod;
+    text-align: center;
+    margin: 40px;
+    font-size: 30px;
+    letter-spacing: 5px;
+    font-weight: lighter;
+    
+}
+
+.select-container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 35%;
+    margin: 10px auto;
+}
+
+select {
+    margin: 30px auto;
+    width: 300px;
+    height: 60px;
+    display: inline-block;
+    color: goldenrod;
+    background-color: rgb(61, 61, 42);
+}
