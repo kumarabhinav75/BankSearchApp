@@ -9,15 +9,19 @@ const nextButton = document.getElementById("next-page-btn");
 const pageNumberContainer = document.getElementById('page-number');
 const pageSizeSelector = document.getElementById('page-size');
 
+//add event listeners
 selectCity.addEventListener("change", (e) => handleCitySelect(e.target.value));
 searchBar.addEventListener("input", (e) => handleSearchInput(e.target.value.toUpperCase()));
 prevButton.addEventListener("click", () => previousPage());
 nextButton.addEventListener("click", () => nextPage());
 pageSizeSelector.addEventListener("change", (e) => handlePageSizeChange(e.target.value));
 
+
+//global data
 let finalBankData=[];
 let filteredData=[];
 
+//when app loads, hide loader and bankTable
 loader.style.display = 'none';
 bankDataContainer.style.display = 'none';
 
@@ -52,6 +56,8 @@ const newPagination = (data) => {
     startIndex = 0;
     paginate(data);
 }
+
+
 //here, currPage can never go out of bounds
 const previousPage = () => {
     currPage -= 1;
