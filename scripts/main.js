@@ -40,3 +40,25 @@ const paginate = () => {
 
 }
  
+
+//this function will make api call and cache it for next time.
+const cachingResponseFromFetch = (cityName) => {
+    // Use the URL as the cache key to sessionStorage
+    const cacheKey = cityName;
+    const url = `https://vast-shore-74260.herokuapp.com/banks?city=${cityName}`;
+
+    // START new cache HIT code
+    const cached = JSON.parse(sessionStorage.getItem(cacheKey));
+    if (cached !== null) {
+      // it was in sessionStorage! Yay!
+        return cached;
+    }
+
+    return fetch(url)
+        .then(async (response) => {
+            const res = await response.json();
+            sessionStorage.setItem(cacheKey, JSON.stringify(res))
+            return res;
+            })
+
+  }
