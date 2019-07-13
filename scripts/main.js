@@ -8,6 +8,7 @@ const prevButton = document.getElementById("prev-page-btn");
 const nextButton = document.getElementById("next-page-btn");
 const pageNumberContainer = document.getElementById('page-number');
 const pageSizeSelector = document.getElementById('page-size');
+const favouriteCheckbox = document.getElementById('fav-checkbox');
 
 //add event listeners
 selectCity.addEventListener("change", (e) => handleCitySelect(e.target.value));
@@ -16,19 +17,55 @@ prevButton.addEventListener("click", () => previousPage());
 nextButton.addEventListener("click", () => nextPage());
 pageSizeSelector.addEventListener("change", (e) => handlePageSizeChange(e.target.value));
 bankTable.addEventListener("mousedown",(e) => handleRowPress(e.target));
+favouriteCheckbox.addEventListener("change", (e) => showOnlyFavBank())
 
 //initialize fav-bank in sessionStorage
-const favBankKey = 'fav-banks';
-const favBankData = [];
-sessionStorage.setItem(favBankKey,JSON.stringify(favBankData));
+const favBankKey = 'fav-banks-';
+let favBankIFSC;
 
 //global data for table
 let finalBankData=[];
 let filteredData=[];
+const cityNames = ['BENGALURU','CHENNAI','DELHI','JAIPUR','MUMBAI']
+let currCityName='';
 
-//when app loads, hide loader and bankTable
+
+
+//global varialble to store favourite banks
+let favouriteBanks;
+
+const cacheFavouriteBank = (rowObj) => {
+    let favBankData = JSON.parse(sessionStorage.getItem(favBankKey+currCityName));
+    if(!favBankData){
+        favBankData = [];
+    }
+    favBankData.push(rowObj);
+    // console.log(favBankData.length);
+    sessionStorage.setItem(favBankKey+currCityName,JSON.stringify(favBankData));
+}
+
+const addIFSC = (rowObj) => {
+    const {ifsc} = rowObj;
+    if(favBankIFSC.indexOf(ifsc)===-1){ //not found
+        favBankIFSC.push(ifsc);
+        return true;
+    }else return false
+}
+
+//when app loads, hide loader and bankTable and make sessionStorage call for favourite banks
 loader.style.display = 'none';
 bankDataContainer.style.display = 'none';
+cityNames.map((city) => {
+    console.log(favBankKey+city)
+    const bankData = JSON.parse(sessionStorage.getItem(favBankKey+city));
+    console.log(bankData);
+    //add ifsc to global array
+    if(bankData){
+        bankData.map((bank) => addIFSC(bank));
+    }else{
+        favBankIFSC = [];
+    }
+})
 
 //global data for pagination
 let currPage;
@@ -74,7 +111,7 @@ const paginate = (data) => {
     //hide or show buttons according to currPage
     prevButton.style.visibility = (currPage === 1) ? 'hidden' : 'visible';
     nextButton.style.visibility = (currPage === pagesCount) ? 'hidden' : 'visible';
-    console.log({currPage,startIndex,pageSize, pagesCount});
+    // console.log({currPage,startIndex,pageSize, pagesCount});
     if(currPage === pagesCount){
         renderTable(data.slice(pageSize*(pagesCount-1)));   //handled last page differently
     }else{
@@ -84,6 +121,21 @@ const paginate = (data) => {
  
 //handle city dropdown selection
 const handleCitySelect = async (cityName) => {
+
+    //set global currCityName
+    currCityName = cityName;
+
+    //get favouritebank data from session storage;
+
+    cityNames.map((city) => {
+        const bankData = JSON.parse(sessionStorage.getItem(favBankKey+city));
+        //add ifsc to global array
+        if(bankData){
+            bankData.map((bank) => addIFSC(bank));
+        }
+    })
+
+    favouriteCheckbox.checked = false;
     //show loader and hide table
     bankDataContainer.style.display = 'none';
     loader.style.display = '';
@@ -110,17 +162,23 @@ const handlePageSizeChange = (size) => {
 // indexOf returns -1 for no result
 // to search accross 4 fields, add all indexOfs and check if value > -4? to match rows
 const handleSearchInput = (value) => {
-    filteredData = finalBankData.filter((bank) => {
-        const { ifsc,address,bank_name, branch } = bank;
-        const ifscIndex = ifsc.indexOf(value);
-        const addressIndex = address.indexOf(value);
-        const nameIndex = bank_name.indexOf(value);
-        const branchIndex = branch.indexOf(value);
-        const totalIndex  = ifscIndex+addressIndex+nameIndex+branchIndex;
-        return totalIndex > -4? true:false; //just checks if total sum >-4 (will be if any of searches give >-1)
-    });
+    if(favouriteCheckbox.checked===false){
+        filteredData = finalBankData.filter((bank) => searchValueInTable(bank,value));
+    }else{
+        filteredData = favouriteBanks.filter((bank) => searchValueInTable(bank,value));
+    }
     newPagination(filteredData);
 }
+
+const searchValueInTable = (bank,value) => {
+    const { ifsc,address,bank_name, branch } = bank;
+    const ifscIndex = ifsc.indexOf(value);
+    const addressIndex = address.indexOf(value);
+    const nameIndex = bank_name.indexOf(value);
+    const branchIndex = branch.indexOf(value);
+    const totalIndex  = ifscIndex+addressIndex+nameIndex+branchIndex;
+    return totalIndex > -4? true:false; //just checks if total sum >-4 (will be if any of searches give >-1)
+};
 
 //this function will make api call and cache it for next time.
 const cachingResponseFromFetch = async (cityName) => {
@@ -181,20 +239,41 @@ const handleRowPress = (tableRow) => {
     }
     rowDataArr = rowDataArr.slice(1);
     const rowObj = new rowData(...rowDataArr);
-    cacheFavouriteBank(rowObj);
+    if(addIFSC(rowObj)){
+        cacheFavouriteBank(rowObj);
+    }
 }
 
 //constructor function to create row Objects
 const rowData = function(ifsc,bankName,branch,address){
     this.ifsc=ifsc;
-    this.bankName=bankName;
+    this.bank_name=bankName;
     this.branch=branch;
     this.address=address;
 }
 
-//
-const cacheFavouriteBank = (rowObj) => {
-    const favBankData = JSON.parse(sessionStorage.getItem(favBankKey));
-    favBankData.push(rowObj);
-    sessionStorage.setItem(favBankKey,JSON.stringify(favBankData));
+
+
+
+const showOnlyFavBank = () => {
+    searchBar.value="";
+    if(favouriteCheckbox.checked){
+        const favBanks = JSON.parse(sessionStorage.getItem(favBankKey+currCityName));
+
+        if(favBanks) {
+            favBanks.map((bank) => {
+                addIFSC(bank);
+            });
+            newPagination(favBanks);
+            favouriteBanks = favBanks;
+            console.log({favouriteBanks});
+        }else{
+            newPagination([{}])
+            favouriteBanks = [];
+        }
+        
+    }else{
+        newPagination(filteredData);
+    }
 }
+
