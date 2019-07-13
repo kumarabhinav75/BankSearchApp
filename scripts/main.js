@@ -11,6 +11,9 @@ const pageSizeSelector = document.getElementById('page-size');
 
 selectCity.addEventListener("change", (e) => handleCitySelect(e.target.value));
 searchBar.addEventListener("input", (e) => handleSearchInput(e.target.value.toUpperCase()));
+prevButton.addEventListener("click", () => previousPage());
+nextButton.addEventListener("click", () => nextPage());
+pageSizeSelector.addEventListener("change", (e) => handlePageSizeChange(e.target.value));
 
 
 //handle city dropdown selection
@@ -18,9 +21,15 @@ const handleCitySelect = (cityName) => {
     //show loader and hide table
     bankDataContainer.style.display = 'none';
     loader.style.display = '';
+    const data = await cachingResponseFromFetch(cityName);
+    finalBankData = data;           //storing globally
+    filteredData = finalBankData;   //storing globally
+    pagesCount = Math.ceil(finalBankData.length/pageSize);
 
 
 }
+
+
 //start thinking how to paginate
 
 let currPage;
@@ -28,8 +37,17 @@ let pageSize = 250;
 let startIndex;
 let pagesCount;
 
+const newPagination = (data) => {
+    currPage = 1;
+    startIndex = 0;
+    paginate(data);
+}
+//here, currPage can never go out of bounds
 const previousPage = () => {
-
+    currPage-=1;
+    startIndex-=pageSize;
+    paginate(filteredData);
+    window.scrollTo(0,0);
 }
 
 const nextPage = () => {
