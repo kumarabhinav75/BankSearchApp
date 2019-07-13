@@ -15,6 +15,7 @@ searchBar.addEventListener("input", (e) => handleSearchInput(e.target.value.toUp
 prevButton.addEventListener("click", () => previousPage());
 nextButton.addEventListener("click", () => nextPage());
 pageSizeSelector.addEventListener("change", (e) => handlePageSizeChange(e.target.value));
+bankTable.addEventListener("mousedown",(e) => handleRowPress(e.target));
 
 
 //global data for table
@@ -69,7 +70,7 @@ const paginate = (data) => {
     //hide or show buttons according to currPage
     prevButton.style.visibility = (currPage === 1) ? 'hidden' : 'visible';
     nextButton.style.visibility = (currPage === pagesCount) ? 'hidden' : 'visible';
-
+    console.log({currPage,startIndex,pageSize, pagesCount});
     if(currPage === pagesCount){
         renderTable(data.slice(pageSize*(pagesCount-1)));   //handled last page differently
     }else{
@@ -166,4 +167,22 @@ const renderTable = (data) => {
     );
 
     bankTable.innerHTML = bankTableData.join('');
+}
+
+const handleRowPress = (tableRow) => {
+    const rowChildren = tableRow.parentElement.children;
+    let rowDataArr = [];
+    for(let i=0;i<rowChildren.length;i++){
+        rowDataArr.push(rowChildren[i].innerHTML);
+    }
+    rowDataArr = rowDataArr.slice(1);
+    const rowObj = new rowData(...rowDataArr);
+    console.log(rowObj);
+}
+
+const rowData = function(ifsc,bankName,branch,address){
+    this.ifsc=ifsc;
+    this.bankName=bankName;
+    this.branch=branch;
+    this.address=address;
 }
