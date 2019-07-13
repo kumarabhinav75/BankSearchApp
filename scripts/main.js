@@ -29,21 +29,21 @@ let filteredData=[];
 const cityNames = ['BENGALURU','CHENNAI','DELHI','JAIPUR','MUMBAI']
 let currCityName='';
 
-
-
 //global varialble to store favourite banks
 let favouriteBanks;
 
+
+//function to cache favourie bank into session storage
 const cacheFavouriteBank = (rowObj) => {
     let favBankData = JSON.parse(sessionStorage.getItem(favBankKey+currCityName));
     if(!favBankData){
         favBankData = [];
     }
     favBankData.push(rowObj);
-    // console.log(favBankData.length);
     sessionStorage.setItem(favBankKey+currCityName,JSON.stringify(favBankData));
 }
 
+//function to add ifsc number to global array to avoid repetition
 const addIFSC = (rowObj) => {
     const {ifsc} = rowObj;
     if(favBankIFSC.indexOf(ifsc)===-1){ //not found
@@ -55,10 +55,10 @@ const addIFSC = (rowObj) => {
 //when app loads, hide loader and bankTable and make sessionStorage call for favourite banks
 loader.style.display = 'none';
 bankDataContainer.style.display = 'none';
+
+//when page loads, get all the favourite items, if any present in sessionStorage (Does this once every time pages loads)
 cityNames.map((city) => {
-    console.log(favBankKey+city)
     const bankData = JSON.parse(sessionStorage.getItem(favBankKey+city));
-    console.log(bankData);
     //add ifsc to global array
     if(bankData){
         bankData.map((bank) => addIFSC(bank));
@@ -111,7 +111,6 @@ const paginate = (data) => {
     //hide or show buttons according to currPage
     prevButton.style.visibility = (currPage === 1) ? 'hidden' : 'visible';
     nextButton.style.visibility = (currPage === pagesCount) ? 'hidden' : 'visible';
-    // console.log({currPage,startIndex,pageSize, pagesCount});
     if(currPage === pagesCount){
         renderTable(data.slice(pageSize*(pagesCount-1)));   //handled last page differently
     }else{
@@ -126,7 +125,6 @@ const handleCitySelect = async (cityName) => {
     currCityName = cityName;
 
     //get favouritebank data from session storage;
-
     cityNames.map((city) => {
         const bankData = JSON.parse(sessionStorage.getItem(favBankKey+city));
         //add ifsc to global array
@@ -196,7 +194,7 @@ const cachingResponseFromFetch = async (cityName) => {
     return fetch(url)
         .then(async (response) => {
             const res = await response.json();
-            sessionStorage.setItem(cacheKey, JSON.stringify(res))
+            sessionStorage.setItem(cacheKey, JSON.stringify(res));
             return res;
         })
 
@@ -252,23 +250,18 @@ const rowData = function(ifsc,bankName,branch,address){
     this.address=address;
 }
 
-
-
-
 const showOnlyFavBank = () => {
     searchBar.value="";
     if(favouriteCheckbox.checked){
         const favBanks = JSON.parse(sessionStorage.getItem(favBankKey+currCityName));
-
         if(favBanks) {
             favBanks.map((bank) => {
                 addIFSC(bank);
             });
             newPagination(favBanks);
             favouriteBanks = favBanks;
-            console.log({favouriteBanks});
         }else{
-            newPagination([{}])
+            newPagination([{}]);
             favouriteBanks = [];
         }
         
