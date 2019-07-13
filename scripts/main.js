@@ -25,8 +25,6 @@ let filteredData=[];
 loader.style.display = 'none';
 bankDataContainer.style.display = 'none';
 
-//start thinking how to paginate
-
 let currPage;
 let pageSize = 250;
 let startIndex;
