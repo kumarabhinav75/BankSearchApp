@@ -17,7 +17,7 @@ nextButton.addEventListener("click", () => nextPage());
 pageSizeSelector.addEventListener("change", (e) => handlePageSizeChange(e.target.value));
 
 
-//global data
+//global data for table
 let finalBankData=[];
 let filteredData=[];
 
@@ -25,14 +25,15 @@ let filteredData=[];
 loader.style.display = 'none';
 bankDataContainer.style.display = 'none';
 
+//global data for pagination
 let currPage;
-let pageSize = 250;
+let pageSize = 250;   //can be chosen by user #todo
 let startIndex;
 let pagesCount;
 
 // In newPagination, reset the indices and counts;
 //then paginate data
-const newPagination = (data) => {
+const newPagination = (data) => {   
     currPage = 1;
     startIndex = 0;
     paginate(data);
@@ -48,9 +49,9 @@ const previousPage = () => {
 
 const nextPage = () => {
     currPage += 1;
-    startIndex += 1;
+    startIndex += pageSize;
     paginate(filteredData);
-    window.scroll(0,0);
+    window.scrollTo(0,0);
 }
 
 //this function will take data and chunkify it based on pageSize.
@@ -117,12 +118,12 @@ const handleSearchInput = (value) => {
 }
 
 //this function will make api call and cache it for next time.
-const cachingResponseFromFetch = (cityName) => {
-    // Use the URL as the cache key to sessionStorage
+const cachingResponseFromFetch = async (cityName) => {
+    // Use the cityName as the cache key to sessionStorage
     const cacheKey = cityName;
     const url = `https://vast-shore-74260.herokuapp.com/banks?city=${cityName}`;
 
-    // START new cache HIT code
+    //stored as string, so JSON.parse
     const cached = JSON.parse(sessionStorage.getItem(cacheKey));
     if (cached !== null) {
       // it was in sessionStorage! Yay!
@@ -134,7 +135,7 @@ const cachingResponseFromFetch = (cityName) => {
             const res = await response.json();
             sessionStorage.setItem(cacheKey, JSON.stringify(res))
             return res;
-            })
+        })
 
 }
 
@@ -150,6 +151,7 @@ const renderTable = (data) => {
         </tr>`].concat(
                     bankData.map((bank,index) => {
                         const {ifsc,address,bank_name, branch} = bank;
+                        
                         return (
                             `
                             <tr>
@@ -161,7 +163,7 @@ const renderTable = (data) => {
                             </tr>`
                         )
                     })
-        );
+    );
 
     bankTable.innerHTML = bankTableData.join('');
 }
