@@ -96,6 +96,11 @@ const handleCitySelect = async (cityName) => {
     bankDataContainer.style.display = '';
 }
 
+const handlePageSizeChange = (size) => {
+    pageSize = size;
+    newPagination(filteredData);
+}
+
 //this function will make api call and cache it for next time.
 const cachingResponseFromFetch = (cityName) => {
     // Use the URL as the cache key to sessionStorage
