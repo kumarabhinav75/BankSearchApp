@@ -54,14 +54,17 @@ const newPagination = (data) => {
 }
 //here, currPage can never go out of bounds
 const previousPage = () => {
-    currPage-=1;
-    startIndex-=pageSize;
+    currPage -= 1;
+    startIndex -= pageSize;
     paginate(filteredData);
     window.scrollTo(0,0);
 }
 
 const nextPage = () => {
-
+    currPage += 1;
+    startIndex += 1;
+    paginate(filteredData);
+    window.scroll(0,0);
 }
 
 const paginate = () => {
