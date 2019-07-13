@@ -25,6 +25,59 @@ let filteredData=[];
 loader.style.display = 'none';
 bankDataContainer.style.display = 'none';
 
+//start thinking how to paginate
+
+let currPage;
+let pageSize = 250;
+let startIndex;
+let pagesCount;
+
+// In newPagination, reset the indices and counts;
+//then paginate data
+const newPagination = (data) => {
+    currPage = 1;
+    startIndex = 0;
+    paginate(data);
+}
+
+//here, currPage can never go out of bounds
+const previousPage = () => {
+    currPage -= 1;
+    startIndex -= pageSize;
+    paginate(filteredData);
+    window.scrollTo(0,0);
+}
+
+const nextPage = () => {
+    currPage += 1;
+    startIndex += 1;
+    paginate(filteredData);
+    window.scroll(0,0);
+}
+
+//this function will take data and chunkify it based on pageSize.
+//Then it will call renderTable function with segmented data to render;
+const paginate = (data) => {
+    pagesCount = Math.ceil(data.length/pageSize);
+
+    //message to show page number
+    pageNumberContainer.textContent = `Page ${currPage} of ${pagesCount}`;
+    
+    //edge conditions for currPage
+    if(currPage < 1) {currPage = 1};
+    if(currPage > pagesCount) {currPage = pagesCount};
+
+    //hide or show buttons according to currPage
+    prevButton.style.visibility = (currPage === 1) ? 'hidden' : 'visible';
+    nextButton.style.visibility = (currPage === pagesCount) ? 'hidden' : 'visible';
+
+    if(currPage === pagesCount){
+        renderTable(data.slice(pageSize*(pagesCount-1)));   //handled last page differently
+    }else{
+        renderTable(data.slice(startIndex,startIndex+pageSize));    //slice the array to segment based on index
+    }
+}
+ 
 //handle city dropdown selection
 const handleCitySelect = async (cityName) => {
     //show loader and hide table
@@ -42,41 +95,6 @@ const handleCitySelect = async (cityName) => {
     loader.style.display = 'none';
     bankDataContainer.style.display = '';
 }
-
-
-//start thinking how to paginate
-
-let currPage;
-let pageSize = 250;
-let startIndex;
-let pagesCount;
-
-const newPagination = (data) => {
-    currPage = 1;
-    startIndex = 0;
-    paginate(data);
-}
-
-
-//here, currPage can never go out of bounds
-const previousPage = () => {
-    currPage -= 1;
-    startIndex -= pageSize;
-    paginate(filteredData);
-    window.scrollTo(0,0);
-}
-
-const nextPage = () => {
-    currPage += 1;
-    startIndex += 1;
-    paginate(filteredData);
-    window.scroll(0,0);
-}
-
-const paginate = () => {
-
-}
- 
 
 //this function will make api call and cache it for next time.
 const cachingResponseFromFetch = (cityName) => {
