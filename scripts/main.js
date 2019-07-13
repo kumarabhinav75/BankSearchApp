@@ -17,6 +17,10 @@ nextButton.addEventListener("click", () => nextPage());
 pageSizeSelector.addEventListener("change", (e) => handlePageSizeChange(e.target.value));
 bankTable.addEventListener("mousedown",(e) => handleRowPress(e.target));
 
+//initialize fav-bank in sessionStorage
+const favBankKey = 'fav-banks';
+const favBankData = [];
+sessionStorage.setItem(favBankKey,JSON.stringify(favBankData));
 
 //global data for table
 let finalBankData=[];
@@ -177,12 +181,20 @@ const handleRowPress = (tableRow) => {
     }
     rowDataArr = rowDataArr.slice(1);
     const rowObj = new rowData(...rowDataArr);
-    console.log(rowObj);
+    cacheFavouriteBank(rowObj);
 }
 
+//constructor function to create row Objects
 const rowData = function(ifsc,bankName,branch,address){
     this.ifsc=ifsc;
     this.bankName=bankName;
     this.branch=branch;
     this.address=address;
+}
+
+//
+const cacheFavouriteBank = (rowObj) => {
+    const favBankData = JSON.parse(sessionStorage.getItem(favBankKey));
+    favBankData.push(rowObj);
+    sessionStorage.setItem(favBankKey,JSON.stringify(favBankData));
 }
