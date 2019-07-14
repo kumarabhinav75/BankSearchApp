@@ -19,7 +19,7 @@ pageSizeSelector.addEventListener("change", (e) => handlePageSizeChange(e.target
 bankTable.addEventListener("mousedown",(e) => handleRowPress(e.target));
 favouriteCheckbox.addEventListener("change", (e) => showOnlyFavBank())
 
-//initialize fav-bank in sessionStorage
+//initialize fav-bank in localStorage
 const favBankKey = 'fav-banks-';
 let favBankIFSC;
 
@@ -35,12 +35,12 @@ let favouriteBanks;
 
 //function to cache favourie bank into session storage
 const cacheFavouriteBank = (rowObj) => {
-    let favBankData = JSON.parse(sessionStorage.getItem(favBankKey+currCityName));
+    let favBankData = JSON.parse(localStorage.getItem(favBankKey+currCityName));
     if(!favBankData){
         favBankData = [];
     }
     favBankData.push(rowObj);
-    sessionStorage.setItem(favBankKey+currCityName,JSON.stringify(favBankData));
+    localStorage.setItem(favBankKey+currCityName,JSON.stringify(favBankData));
 }
 
 //function to add ifsc number to global array to avoid repetition
@@ -52,13 +52,13 @@ const addIFSC = (rowObj) => {
     }else return false
 }
 
-//when app loads, hide loader and bankTable and make sessionStorage call for favourite banks
+//when app loads, hide loader and bankTable and make localStorage call for favourite banks
 loader.style.display = 'none';
 bankDataContainer.style.display = 'none';
 
-//when page loads, get all the favourite items, if any present in sessionStorage (Does this once every time pages loads)
+//when page loads, get all the favourite items, if any present in localStorage (Does this once every time pages loads)
 cityNames.map((city) => {
-    const bankData = JSON.parse(sessionStorage.getItem(favBankKey+city));
+    const bankData = JSON.parse(localStorage.getItem(favBankKey+city));
     //add ifsc to global array
     if(bankData){
         bankData.map((bank) => addIFSC(bank));
@@ -126,7 +126,7 @@ const handleCitySelect = async (cityName) => {
 
     //get favouritebank data from session storage;
     cityNames.map((city) => {
-        const bankData = JSON.parse(sessionStorage.getItem(favBankKey+city));
+        const bankData = JSON.parse(localStorage.getItem(favBankKey+city));
         //add ifsc to global array
         if(bankData){
             bankData.map((bank) => addIFSC(bank));
@@ -180,21 +180,21 @@ const searchValueInTable = (bank,value) => {
 
 //this function will make api call and cache it for next time.
 const cachingResponseFromFetch = async (cityName) => {
-    // Use the cityName as the cache key to sessionStorage
+    // Use the cityName as the cache key to localStorage
     const cacheKey = cityName;
     const url = `https://vast-shore-74260.herokuapp.com/banks?city=${cityName}`;
 
     //stored as string, so JSON.parse
-    const cached = JSON.parse(sessionStorage.getItem(cacheKey));
+    const cached = JSON.parse(localStorage.getItem(cacheKey));
     if (cached !== null) {
-      // it was in sessionStorage! Yay!
+      // it was in localStorage! Yay!
         return cached;
     }
 
     return fetch(url)
         .then(async (response) => {
             const res = await response.json();
-            sessionStorage.setItem(cacheKey, JSON.stringify(res));
+            localStorage.setItem(cacheKey, JSON.stringify(res));
             return res;
         })
 
@@ -253,7 +253,7 @@ const rowData = function(ifsc,bankName,branch,address){
 const showOnlyFavBank = () => {
     searchBar.value="";
     if(favouriteCheckbox.checked){
-        const favBanks = JSON.parse(sessionStorage.getItem(favBankKey+currCityName));
+        const favBanks = JSON.parse(localStorage.getItem(favBankKey+currCityName));
         if(favBanks) {
             favBanks.map((bank) => {
                 addIFSC(bank);
