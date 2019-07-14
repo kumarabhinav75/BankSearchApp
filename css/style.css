@@ -121,8 +121,8 @@ input:hover, select:hover, button:hover {
 }
 
 .tooltip {
-position: relative;
 display: inline-block;
+width: 20%;
 border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 
@@ -158,8 +158,8 @@ visibility: visible;
 
 
 #fav-checkbox {
-    height:5px;
-    width: 5px;
+    height:15px;
+    width: 15px;
     display: inline-block;
     line-height: 120px;
 }
