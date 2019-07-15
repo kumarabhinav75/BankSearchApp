@@ -128,7 +128,7 @@ const handleCitySelect = async (cityName) => {
 const handlePageSizeChange = (size) => {
     pageSize = parseInt(size);
     filteredData = (!favouriteCheckbox.checked)?
-        finalBankData:
+        filteredData:
         favouriteBanks;
     newPagination(filteredData);
 }
