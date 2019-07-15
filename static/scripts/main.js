@@ -127,10 +127,10 @@ const handleCitySelect = async (cityName) => {
 
 const handlePageSizeChange = (size) => {
     pageSize = parseInt(size);
-    filteredData = (!favouriteCheckbox.checked)?
-        filteredData:
-        favouriteBanks;
-    newPagination(filteredData);
+    (!favouriteCheckbox.checked)?
+        newPagination(filteredData):
+        newPagination(favouriteBanks);
+
 }
 
 const handleSearchInput = (value) => {
