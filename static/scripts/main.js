@@ -19,7 +19,7 @@ bankTable.addEventListener("mousedown",(e) => handleRowPress(e.target));
 favouriteCheckbox.addEventListener("change", (e) => showOnlyFavBank())
 
 const favBankKey = 'fav-banks-';
-let favBankIFSC;
+let favBankIFSC=[];
 
 let finalBankData=[];
 let filteredData=[];
