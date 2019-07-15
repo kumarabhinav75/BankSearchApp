@@ -1,0 +1,165 @@
+body {
+    background-color: black;
+}
+
+h1 {
+    color: goldenrod;
+    text-align: center;
+    margin: 40px;
+    font-size: 50px;
+    letter-spacing: 10px;
+    font-weight: lighter;
+}
+
+h2 {
+    color: goldenrod;
+    text-align: center;
+    margin: 40px;
+    font-size: 30px;
+    letter-spacing: 5px;
+    font-weight: lighter;
+    
+}
+
+.select-container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 50%;
+    margin: 10px auto;
+}
+
+select {
+    margin: 30px auto;
+    width: 300px;
+    height: 60px;
+    display: inline-block;
+    color: goldenrod;
+    background-color: rgb(61, 61, 42);
+}
+
+
+
+input {
+    margin: 30px auto;
+    width: 500px;
+    height: 40px;
+    display: block;
+    color: goldenrod;
+    background-color: rgb(61, 61, 42);
+    font-size: 20px;
+    border-radius: 20px;
+    padding-left: 15px;
+}
+
+table {
+    width: 70%;
+
+}
+table,th,td {
+    border: 2px solid goldenrod;
+    border-collapse: collapse;
+    color: goldenrod;
+    font-size: 20px;
+    margin: 40px auto;
+    font-weight: lighter;
+}
+
+td {
+    padding: 10px 10px;
+    font-size: 12px;
+    overflow-x: hidden;
+}
+
+tr:hover,td:hover {
+    border-color: goldenrod;
+    background-color: grey;
+    text-decoration-color: black;
+}
+
+.loader {
+    border: 16px solid goldenrod; /* Light grey */
+    border-top: 16px solid black; /* Blue */
+    border-bottom: 16px solid black; /* Blue */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+
+.loader {
+    margin: 80px auto;
+}
+
+button {
+    color: goldenrod;
+    height: 50px;
+    width: 100px;
+    background-color: black;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    margin: 20px auto;
+}
+
+input:hover, select:hover, button:hover {
+    border-color: goldenrod;
+
+}
+
+#page-number {
+    color: white;
+    text-align: center;
+}
+
+.tooltip {
+display: inline-block;
+width: 20%;
+border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.tooltip .tooltiptext {
+visibility: hidden;
+width: 120px;
+background-color: greenyellow;
+color: brown;
+text-align: center;
+padding: 25px 10px;
+border-radius: 16px;
+margin-left: 12px;
+
+/* Position the tooltip text - see examples below! */
+position: absolute;
+z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+visibility: visible;
+}
+
+
+#favourite {
+    color: goldenrod;
+    font-size: 20px;
+    width: 200px;
+    margin-top:20px;
+    margin-left: 10px;
+    line-height:120px;
+}
+
+
+#fav-checkbox {
+    height:15px;
+    width: 15px;
+    display: inline-block;
+    line-height: 120px;
+}

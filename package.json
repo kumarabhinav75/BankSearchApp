@@ -1,0 +1,23 @@
+{
+  "name": "banksearchapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kumarabhinav75/BankSearchApp.git"
+  },
+  "author": "Abhinav Kumar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kumarabhinav75/BankSearchApp/issues"
+  },
+  "homepage": "https://github.com/kumarabhinav75/BankSearchApp#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "path": "^0.12.7"
+  }
+}
